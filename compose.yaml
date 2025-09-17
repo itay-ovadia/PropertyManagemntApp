@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27018:27017"  # Host port 27018 → Container port 27017 (default MongoDB)
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: rental-app
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    name: backend-net
