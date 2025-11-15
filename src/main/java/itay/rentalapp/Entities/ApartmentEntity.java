@@ -1,5 +1,6 @@
 package itay.rentalapp.Entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
@@ -12,12 +13,15 @@ public class ApartmentEntity {
     private String apartmentId; // Unique identifier for the apartment
     private String name;
     private AddressEntity address;
+    @JsonProperty("sq_meter")
     private int sqMeter;
+    @JsonProperty("is_rental")
+    private boolean rental;
+
     private double bedrooms;
     private double bathrooms;
     private boolean hasElevator;
     private boolean hasBunker;
-    private boolean rental;
     private List<LandlordEntity> landlords;
 
     // Default constructor

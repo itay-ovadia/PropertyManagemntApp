@@ -1,0 +1,73 @@
+{
+  "name": "Rental",
+  "type": "object",
+  "properties": {
+    "apartment_id": {
+      "type": "string",
+      "description": "Reference to apartment"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Reference to tenant"
+    },
+    "lease_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Lease start date"
+    },
+    "lease_end": {
+      "type": "string",
+      "format": "date",
+      "description": "Lease end date"
+    },
+    "monthly_rent": {
+      "type": "number",
+      "description": "Monthly rent amount in ILS"
+    },
+    "security_deposit": {
+      "type": "number",
+      "description": "Security deposit amount in ILS"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "pending",
+        "terminated",
+        "expired"
+      ],
+      "description": "Rental status",
+      "default": "active"
+    },
+    "payment_day": {
+      "type": "number",
+      "description": "Day of month rent is due",
+      "minimum": 1,
+      "maximum": 31
+    },
+    "utilities_included": {
+      "type": "boolean",
+      "description": "Are utilities included in rent",
+      "default": false
+    },
+    "contract_terms": {
+      "type": "string",
+      "description": "Special contract terms and conditions"
+    },
+    "last_payment_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Last payment received date"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes about rental"
+    }
+  },
+  "required": [
+    "apartment_id",
+    "tenant_id",
+    "lease_start",
+    "monthly_rent"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "name": "Tenant",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Full name of tenant"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "id_number": {
+      "type": "string",
+      "description": "National ID number"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of birth"
+    },
+    "occupation": {
+      "type": "string",
+      "description": "Tenant's occupation"
+    },
+    "monthly_income": {
+      "type": "number",
+      "description": "Monthly income in ILS"
+    },
+    "emergency_contact_name": {
+      "type": "string",
+      "description": "Emergency contact name"
+    },
+    "emergency_contact_phone": {
+      "type": "string",
+      "description": "Emergency contact phone"
+    },
+    "previous_address": {
+      "type": "string",
+      "description": "Previous address"
+    },
+    "references": {
+      "type": "string",
+      "description": "References information"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "phone"
+  ]
+}

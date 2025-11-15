@@ -1,0 +1,31 @@
+{
+    "name": "Address",
+    "type": "object",
+    "properties": {
+    "street": {
+        "type": "string",
+            "description": "Street address"
+    },
+    "city": {
+        "type": "string",
+            "description": "City name"
+    },
+    "state": {
+        "type": "string",
+            "description": "State or region"
+    },
+    "postal_code": {
+        "type": "string",
+            "description": "Postal or ZIP code"
+    },
+    "country": {
+        "type": "string",
+            "description": "Country name",
+            "default": "Israel"
+    }
+},
+    "required": [
+    "street",
+    "city"
+]
+}

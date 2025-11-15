@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "name": "Sunrise Apartment 3B",
+        "address": {
+            "street": "123 Main St",
+            "city": "Tel Aviv",
+            "state": "Central",
+            "postal_code": "12345",
+            "country": "Israel"
+        },
+        "sq_meter": 80,
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "property_type": "apartment",
+        "is_rental": true,
+        "monthly_rent": 8500
+    },
+    {
+        "id": 2,
+        "name": "Sea View Penthouse",
+        "address": {
+            "street": "456 Beach Rd",
+            "city": "Tel Aviv",
+            "state": "Central",
+            "postal_code": "54321",
+            "country": "Israel"
+        },
+        "sq_meter": 120,
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "property_type": "penthouse",
+        "is_rental": false
+    }
+]
