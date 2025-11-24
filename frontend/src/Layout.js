@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, LayoutDashboard, Building2, Users, FileText, PlusCircle } from "lucide-react";
+import { Home, LayoutDashboard, Building2, Users, FileText, User, PlusCircle } from "lucide-react";
 
 // Sidebar container
 function Sidebar({ children }) {
@@ -18,8 +18,8 @@ function SidebarItem({ to, icon: Icon, children }) {
     return (
         <Link
             to={to}
-            className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 
-            ${active ? "bg-blue-100 text-blue-700" : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"}`}
+            className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
+            ${active ? "bg-blue-200 text-blue-800" : "text-gray-700 hover:bg-blue-50 hover:text-blue-700"}`}
         >
             <Icon className="w-5 h-5" />
             {children}
@@ -33,6 +33,7 @@ export default function Layout({ children }) {
         { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
         { title: "Properties", url: "/properties", icon: Building2 },
         { title: "Tenants", url: "/tenants", icon: Users },
+        { title: "Users", url: "/users", icon: User },   // Added Users page
         { title: "Rentals", url: "/rentals", icon: FileText },
     ];
 
@@ -66,6 +67,9 @@ export default function Layout({ children }) {
                     </SidebarItem>
                     <SidebarItem to="/tenants?action=add" icon={Users}>
                         Add Tenant
+                    </SidebarItem>
+                    <SidebarItem to="/users?action=add" icon={User}>
+                        Add User
                     </SidebarItem>
                 </div>
             </Sidebar>

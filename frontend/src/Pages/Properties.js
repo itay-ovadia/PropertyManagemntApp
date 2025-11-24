@@ -23,6 +23,7 @@ export default function Properties() {
             const res = await fetch("http://localhost:8081/api/apartments");
             const data = await res.json();
             setProperties(data);
+            setFilteredProperties(data);
         } catch (error) {
             console.error("Failed to load apartments:", error);
         }
@@ -63,7 +64,6 @@ export default function Properties() {
             let method = "POST";
 
             if (editingProperty) {
-                // Correct: backend uses apartmentId
                 url = `http://localhost:8081/api/apartments/${editingProperty.apartmentId}`;
                 method = "PUT";
             }
@@ -74,14 +74,11 @@ export default function Properties() {
                 body: JSON.stringify(propertyData),
             });
 
-            if (!response.ok) {
-                throw new Error("Failed to save property");
-            }
+            if (!response.ok) throw new Error("Failed to save property");
 
             setShowForm(false);
             setEditingProperty(null);
             loadProperties();
-
         } catch (error) {
             console.error("Failed to save property:", error);
             alert("Error saving property. Check console for details.");
@@ -97,7 +94,24 @@ export default function Properties() {
         setSelectedProperty(property);
     };
 
-    // --- LOADING STATE ---
+    // DELETE FUNCTION (NEW)
+    const handleDeleteProperty = async (id) => {
+        if (!window.confirm("Delete this apartment?")) return;
+
+        try {
+            await fetch(`http://localhost:8081/api/apartments/${id}`, {
+                method: "DELETE",
+            });
+
+            setProperties((prev) => prev.filter((p) => p.apartmentId !== id));
+            setFilteredProperties((prev) => prev.filter((p) => p.apartmentId !== id));
+        } catch (error) {
+            console.error("Failed to delete:", error);
+            alert("Failed to delete property.");
+        }
+    };
+
+    // LOADING STATE
     if (isLoading) {
         return (
             <div className="p-8">
@@ -115,7 +129,7 @@ export default function Properties() {
         );
     }
 
-    // --- FORM VIEW ---
+    // FORM VIEW
     if (showForm) {
         return (
             <div className="p-6 md:p-8 bg-slate-50 min-h-screen">
@@ -134,7 +148,7 @@ export default function Properties() {
         );
     }
 
-    // --- PROPERTY LIST VIEW ---
+    // PROPERTY LIST VIEW
     return (
         <div className="p-6 md:p-8 bg-slate-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
@@ -205,6 +219,7 @@ export default function Properties() {
                                         property={property}
                                         onView={handleViewProperty}
                                         onEdit={handleEditProperty}
+                                        onDelete={() => handleDeleteProperty(property.apartmentId)}
                                     />
                                 </motion.div>
                             ))}

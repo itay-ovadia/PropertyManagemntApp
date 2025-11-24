@@ -1,7 +1,7 @@
-package itay.rentalapp;
 
-import itay.rentalapp.Entities.ApartmentEntity;
-import itay.rentalapp.Service.ApartmentService;
+
+package itay.rentalapp.Controllers;
+
 import itay.rentalapp.Entities.ApartmentEntity;
 import itay.rentalapp.Service.ApartmentService;
 import org.springframework.web.bind.annotation.*;
@@ -30,14 +30,29 @@ public class ApartmentController {
     }
 
     @PutMapping("/{id}")
-    public ApartmentEntity updateApartment(
+    public void updateApartment(
             @PathVariable("id") String id,
-            @RequestBody ApartmentEntity apartment
-    ) {
-        apartment.setApartmentId(id);   // ensure ID matches URL
-        return apartmentService.updateApartment(id, apartment);
+            @RequestBody ApartmentEntity apartment) {
+        apartment.setApartmentId(id);
+        apartmentService.updateApartment(id, apartment);
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteApartment(
+            @PathVariable("id") String id) {
+        apartmentService.deleteApartment(id);
+    }
 
-    // other endpoints as needed
+    @DeleteMapping
+    public void deleteAllApartments(){
+        apartmentService.deleteAllApartments();
+    }
+
 }
+
+
+
+
+
+
+

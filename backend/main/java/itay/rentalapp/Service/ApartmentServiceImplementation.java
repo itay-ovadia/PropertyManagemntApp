@@ -1,9 +1,7 @@
-package itay.rentalapp;
+package itay.rentalapp.Service;
 
+import itay.rentalapp.ApartmentCrud;
 import itay.rentalapp.Entities.ApartmentEntity;
-import itay.rentalapp.Service.ApartmentService;
-import itay.rentalapp.Entities.ApartmentEntity;
-import itay.rentalapp.Service.ApartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,18 +34,29 @@ public class ApartmentServiceImplementation implements ApartmentService {
     public ApartmentEntity createApartment(ApartmentEntity apartment) {
         return apartmentCrud.save(apartment);
     }
-
     @Override
-    public ApartmentEntity updateApartment(String id, ApartmentEntity apartment) {
+    public void updateApartment(String id, ApartmentEntity apartment) {
+        // 1. Check if the entity exists. If not, throw an exception.
         if (!apartmentCrud.existsById(id)) {
-            return null;
+            // Throwing a RuntimeException (or custom exception) is standard when
+            // a PUT request targets a resource that doesn't exist.
+            throw new RuntimeException("Apartment with ID " + id + " not found for update.");
         }
+
+        // 2. Ensure ID is correct (as you intended)
         apartment.setApartmentId(id);
-        return apartmentCrud.save(apartment); // <--- UPDATE HAPPENS HERE
+
+        // 3. Save the updated entity. NO 'return' keyword needed.
+        apartmentCrud.save(apartment);
     }
 
     @Override
     public void deleteApartment(String id) {
         apartmentCrud.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllApartments(){
+        apartmentCrud.deleteAll();
     }
 }
