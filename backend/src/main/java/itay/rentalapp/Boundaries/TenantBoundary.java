@@ -1,6 +1,6 @@
 package itay.rentalapp.Boundaries;
 
-import itay.rentalapp.Entities.ApartmentEntity;
+import itay.rentalapp.Entities.PropertyEntity;
 import itay.rentalapp.Entities.TenantEntity;
 
 public class TenantBoundary {
@@ -9,7 +9,7 @@ public class TenantBoundary {
     private String name;
     private String email;
     private String phoneNumber;
-    private String apartmentId;
+    private String propertyId;
     private String tenantHistory;
 
     public TenantBoundary() {}
@@ -21,18 +21,18 @@ public class TenantBoundary {
         this.email = tenantEntity.getEmail();
         this.phoneNumber = tenantEntity.getPhoneNumber();
         this.tenantHistory = tenantEntity.getTenantHistory();
-        this.apartmentId = tenantEntity.getRentedApartment() != null
-                ? tenantEntity.getRentedApartment().getApartmentId()
+        this.propertyId = tenantEntity.getRentedApartment() != null
+                ? tenantEntity.getRentedApartment().getPropertyId()
                 : null;
     }
 
-    public TenantEntity toEntity(ApartmentEntity apartmentEntity, String passwordHash) {
+    public TenantEntity toEntity(PropertyEntity propertyEntity, String passwordHash) {
         TenantEntity tenant = new TenantEntity(
                 this.name,
                 this.email,
                 this.phoneNumber,
                 passwordHash,
-                apartmentEntity
+                propertyEntity
         );
         tenant.setTenantHistory(this.tenantHistory);
         tenant.setId(this.id); // Optional if updating
@@ -75,12 +75,12 @@ public class TenantBoundary {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getApartmentId() {
-        return apartmentId;
+    public String getPropertyId() {
+        return propertyId;
     }
 
-    public void setApartmentId(String apartmentId) {
-        this.apartmentId = apartmentId;
+    public void setPropertyId(String propertyId) {
+        this.propertyId = propertyId;
     }
 
     public String getTenantHistory() {

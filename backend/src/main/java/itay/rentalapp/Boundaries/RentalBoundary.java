@@ -2,6 +2,7 @@ package itay.rentalapp.Boundaries;
 
 import itay.rentalapp.Entities.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +11,7 @@ public class RentalBoundary {
     private String rentalId;
     private String apartmentId;
     private String tenantId;
-    private List<String> landlordIds;
+    private List<String> landlordIds = new ArrayList<>();
     private int rentPrice;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -18,27 +19,36 @@ public class RentalBoundary {
 
     public RentalBoundary() {}
 
-    // Convert Entity -> Boundary
+    // Convert Entity → Boundary
     public RentalBoundary(RentalEntity entity) {
         this.rentalId = entity.getRentalId();
-        this.apartmentId = entity.getApartment() != null ? entity.getApartment().getApartmentId() : null;
+        this.apartmentId = entity.getApartment() != null ? entity.getApartment().getPropertyId() : null;
         this.tenantId = entity.getTenant() != null ? entity.getTenant().getId() : null;
-        this.landlordIds = entity.getLandlords().stream()
-                .map(LandlordEntity::getId)
-                .collect(Collectors.toList());
+        if (entity.getLandlords() != null) {
+            this.landlordIds = entity.getLandlords().stream()
+                    .map(UserEntity::getId)
+                    .collect(Collectors.toList());
+        }
         this.rentPrice = entity.getRentPrice();
         this.startDate = entity.getStartDate();
         this.endDate = entity.getEndDate();
         this.rentalTerms = entity.getRentalTerms();
     }
 
-    // Convert Boundary -> Entity
-    public RentalEntity toEntity(ApartmentEntity apartment, TenantEntity tenant, List<LandlordEntity> landlords) {
+    // Convert Boundary → Entity
+    public RentalEntity toEntity(PropertyEntity apartment, TenantEntity tenant, List<UserEntity> landlords) {
+        // Only include users with LANDLORD role
+        List<UserEntity> validLandlords = landlords != null
+                ? landlords.stream()
+                .filter(u -> u.getRole() == UserEntity.Role.LANDLORD)
+                .toList()
+                : List.of();
+
         return new RentalEntity(
                 this.rentalId,
                 apartment,
                 tenant,
-                landlords,
+                validLandlords,
                 this.rentPrice,
                 this.startDate,
                 this.endDate,

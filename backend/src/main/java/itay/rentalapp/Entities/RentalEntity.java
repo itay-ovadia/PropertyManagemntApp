@@ -1,5 +1,6 @@
 package itay.rentalapp.Entities;
 
+import org.apache.catalina.User;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
@@ -11,9 +12,9 @@ import java.util.List;
 public class RentalEntity {
     @Id
     private String rentalId;          // Unique identifier for the rental
-    private ApartmentEntity apartmentEntity;       // The apartment being rented
+    private PropertyEntity propertyEntity;       // The apartment being rented
     private TenantEntity tenantEntity;             // The tenant renting the apartment
-    private List<LandlordEntity> landlordEntities;  // List of landlords for the apartment
+    private List<UserEntity> landlords;  // List of landlords for the apartment
     private int rentPrice;          // Monthly rent price
     private LocalDate startDate;       // Rental start date
     private LocalDate endDate;         // Rental end date
@@ -21,12 +22,14 @@ public class RentalEntity {
 
     // Default constructor
     public RentalEntity() {
-        this.landlordEntities = new ArrayList<>();
+
+        this.landlords = new ArrayList<>();
     }
 
+
     // Parameterized constructor
-    public RentalEntity(String rentalId, ApartmentEntity apartmentEntity, TenantEntity tenantEntity, List<LandlordEntity> landlordEntities, int rentPrice, LocalDate startDate, LocalDate endDate, String rentalTerms) {
-        if (apartmentEntity == null || tenantEntity == null || landlordEntities == null || landlordEntities.isEmpty()) {
+    public RentalEntity(String rentalId, PropertyEntity propertyEntity, TenantEntity tenantEntity, List<UserEntity> landlords, int rentPrice, LocalDate startDate, LocalDate endDate, String rentalTerms) {
+        if (propertyEntity == null || tenantEntity == null || landlords == null || landlords.isEmpty()) {
             throw new IllegalArgumentException("Apartment, tenant, and at least one landlord must be provided");
         }
         if (rentPrice < 0) {
@@ -36,9 +39,9 @@ public class RentalEntity {
             throw new IllegalArgumentException("Start date must be before or equal to end date");
         }
         this.rentalId = rentalId;
-        this.apartmentEntity = apartmentEntity;
+        this.propertyEntity = propertyEntity;
         this.tenantEntity = tenantEntity;
-        this.landlordEntities = new ArrayList<>(landlordEntities);
+        this.landlords = new ArrayList<>(landlords);
         this.rentPrice = rentPrice;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -54,15 +57,15 @@ public class RentalEntity {
         this.rentalId = rentalId;
     }
 
-    public ApartmentEntity getApartment() {
-        return apartmentEntity;
+    public PropertyEntity getApartment() {
+        return propertyEntity;
     }
 
-    public void setApartment(ApartmentEntity apartmentEntity) {
-        if (apartmentEntity == null) {
+    public void setApartment(PropertyEntity propertyEntity) {
+        if (propertyEntity == null) {
             throw new IllegalArgumentException("Apartment cannot be null");
         }
-        this.apartmentEntity = apartmentEntity;
+        this.propertyEntity = propertyEntity;
     }
 
     public TenantEntity getTenant() {
@@ -76,28 +79,28 @@ public class RentalEntity {
         this.tenantEntity = tenantEntity;
     }
 
-    public List<LandlordEntity> getLandlords() {
-        return new ArrayList<>(landlordEntities);
+    public List<UserEntity> getLandlords() {
+        return new ArrayList<>(landlords);
     }
 
-    public void setLandlords(List<LandlordEntity> landlordEntities) {
+    public void setLandlords(List<UserEntity> landlordEntities) {
         if (landlordEntities == null || landlordEntities.isEmpty()) {
             throw new IllegalArgumentException("At least one landlord must be provided");
         }
-        this.landlordEntities = new ArrayList<>(landlordEntities);
+        this.landlords = new ArrayList<>(landlordEntities);
     }
 
-    public void addLandlord(LandlordEntity landlordEntity) {
-        if (landlordEntity != null && !landlordEntities.contains(landlordEntity)) {
-            landlordEntities.add(landlordEntity);
+    public void addLandlord(UserEntity landlordEntity) {
+        if (landlordEntity != null && !landlords.contains(landlordEntity)) {
+            landlords.add(landlordEntity);
         }
     }
 
-    public void removeLandlord(LandlordEntity landlordEntity) {
-        if (landlordEntities.size() <= 1) {
+    public void removeLandlord(UserEntity landlordEntity) {
+        if (landlords.size() <= 1) {
             throw new IllegalStateException("Cannot remove the last landlord");
         }
-        landlordEntities.remove(landlordEntity);
+        landlords.remove(landlordEntity);
     }
 
     public int getRentPrice() {
@@ -145,9 +148,9 @@ public class RentalEntity {
     public String toString() {
         return "Rental{" +
                 "rentalId='" + rentalId + '\'' +
-                ", apartment=" + apartmentEntity +
+                ", apartment=" + propertyEntity +
                 ", tenant=" + tenantEntity +
-                ", landlords=" + landlordEntities +
+                ", landlords=" + landlords +
                 ", rentPrice=" + rentPrice +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +

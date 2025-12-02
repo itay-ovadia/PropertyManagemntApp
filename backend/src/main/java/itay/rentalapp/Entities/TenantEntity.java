@@ -7,35 +7,35 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class TenantEntity extends UserEntity {
 
     @Field("rentedApartment")
-    private ApartmentEntity rentedApartmentEntity; // Reference to the apartment that the tenant is renting
+    private PropertyEntity rentedPropertyEntity; // Reference to the apartment that the tenant is renting
     private String tenantHistory; // Optional: Could hold tenant's rental history or other related information
 
     // Default constructor
     public TenantEntity() {}
 
     // Parameterized constructor
-    public TenantEntity(String name, String email, String phoneNumber, String passwordHash, ApartmentEntity rentedApartmentEntity) {
+    public TenantEntity(String name, String email, String phoneNumber, String passwordHash, PropertyEntity rentedPropertyEntity) {
         super(name, email, phoneNumber, passwordHash, Role.TENANT);
 
         // Validation: Ensure that the rentedApartment is not null
-        if (rentedApartmentEntity == null) {
+        if (rentedPropertyEntity == null) {
             throw new IllegalArgumentException("Tenant must be assigned a valid apartment.");
         }
 
-        this.rentedApartmentEntity = rentedApartmentEntity;
+        this.rentedPropertyEntity = rentedPropertyEntity;
     }
 
     // Getter for rentedApartment
-    public ApartmentEntity getRentedApartment() {
-        return rentedApartmentEntity;
+    public PropertyEntity getRentedApartment() {
+        return rentedPropertyEntity;
     }
 
     // Setter for rentedApartment with validation
-    public void setRentedApartment(ApartmentEntity rentedApartmentEntity) {
-        if (rentedApartmentEntity == null) {
+    public void setRentedApartment(PropertyEntity rentedPropertyEntity) {
+        if (rentedPropertyEntity == null) {
             throw new IllegalArgumentException("Apartment cannot be null.");
         }
-        this.rentedApartmentEntity = rentedApartmentEntity;
+        this.rentedPropertyEntity = rentedPropertyEntity;
     }
 
     // Getter for tenantHistory (optional field for tenant's rental history)
@@ -51,6 +51,6 @@ public class TenantEntity extends UserEntity {
     // Override toString for Tenant representation
     @Override
     public String toString() {
-        return "Tenant{id='" + getId() + "', name='" + getName() + "', rentedApartment=" + rentedApartmentEntity + "}";
+        return "Tenant{id='" + getId() + "', name='" + getName() + "', rentedApartment=" + rentedPropertyEntity + "}";
     }
 }

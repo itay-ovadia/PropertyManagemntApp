@@ -1,21 +1,22 @@
 package itay.rentalapp.Boundaries;
 
 import itay.rentalapp.Entities.AddressEntity;
-import itay.rentalapp.Entities.ApartmentEntity;
-import itay.rentalapp.Entities.LandlordEntity;
+import itay.rentalapp.Entities.PropertyEntity;
+import itay.rentalapp.Entities.PropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ApartmentBoundary {
+public class PropertyBoundary {
 
-    private String apartmentId;
+    private String propertyId;
     private String name;
-    private AddressEntity addressEntity;
+    private AddressEntity address;
     private int sqMeter;
     private double bedrooms;
     private double bathrooms;
+    private PropertyType propertyType;
     private boolean hasElevator;
     private boolean hasBunker;
     private boolean isRental;
@@ -23,53 +24,51 @@ public class ApartmentBoundary {
     // Only expose landlord IDs to avoid recursion
     private List<String> landlordIds;
 
-    public ApartmentBoundary() {}
-
+    public PropertyBoundary() {}
     // Convert Entity → Boundary
-    public ApartmentBoundary(ApartmentEntity apartmentEntity) {
-        this.apartmentId = apartmentEntity.getApartmentId();
-        this.name = apartmentEntity.getName();
-        this.addressEntity = apartmentEntity.getAddress();
-        this.sqMeter = apartmentEntity.getSqMeter();
-        this.bedrooms = apartmentEntity.getBedrooms();
-        this.bathrooms = apartmentEntity.getBathrooms();
-        this.hasElevator = apartmentEntity.isHasElevator();
-        this.hasBunker = apartmentEntity.isHasBunker();
-        this.isRental = apartmentEntity.isRental();
+    public PropertyBoundary(PropertyEntity propertyEntity) {
+        this.propertyId = propertyEntity.getPropertyId();
+        this.name = propertyEntity.getName();
+        this.address = propertyEntity.getAddress();
+        this.sqMeter = propertyEntity.getSqMeter();
+        this.bedrooms = propertyEntity.getBedrooms();
+        this.bathrooms = propertyEntity.getBathrooms();
+        this.propertyType = propertyEntity.getPropertyType();
+        this.hasElevator = propertyEntity.getHasElevator() != null && propertyEntity.getHasElevator();
+        this.hasBunker = propertyEntity.getHasBunker() != null && propertyEntity.getHasBunker();
+        this.isRental = propertyEntity.isRental();
 
-        if (apartmentEntity.getLandlords() != null) {
-            this.landlordIds = apartmentEntity.getLandlords().stream()
-                    .map(LandlordEntity::getId)
-                    .collect(Collectors.toList());
-        } else {
-            this.landlordIds = new ArrayList<>();
-        }
+        // Directly copy the list of landlord IDs
+        this.landlordIds = propertyEntity.getlandlordIDs() != null
+                ? new ArrayList<>(propertyEntity.getlandlordIDs())
+                : new ArrayList<>();
     }
 
     // Convert Boundary → Entity
-    public ApartmentEntity toEntity(List<LandlordEntity> resolvedLandlordEntities) {
-        return new ApartmentEntity(
-                apartmentId,
+    public PropertyEntity toEntity() {
+        return new PropertyEntity(
+                propertyId,
                 name,
-                addressEntity,
+                address,
                 sqMeter,
                 bedrooms,
                 bathrooms,
+                propertyType,
                 hasElevator,
                 hasBunker,
                 isRental,
-                resolvedLandlordEntities
+                landlordIds // directly pass the list of IDs
         );
     }
 
     // Getters and Setters
 
-    public String getApartmentId() {
-        return apartmentId;
+    public String getPropertyId() {
+        return propertyId;
     }
 
-    public void setApartmentId(String apartmentId) {
-        this.apartmentId = apartmentId;
+    public void setPropertyId(String propertyId) {
+        this.propertyId = propertyId;
     }
 
     public String getName() {
@@ -81,11 +80,11 @@ public class ApartmentBoundary {
     }
 
     public AddressEntity getAddress() {
-        return addressEntity;
+        return address;
     }
 
     public void setAddress(AddressEntity addressEntity) {
-        this.addressEntity = addressEntity;
+        this.address = addressEntity;
     }
 
     public int getSqMeter() {

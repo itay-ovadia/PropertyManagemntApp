@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Building2, Users, FileText, TrendingUp, DollarSign, Home } from "lucide-react";
+import { Building2, Users, FileText, TrendingUp, Home } from "lucide-react";
 
 // Stat Card Component
 function StatCard({ title, value, icon: Icon, trend, color = "blue" }) {
@@ -32,19 +32,20 @@ function StatCard({ title, value, icon: Icon, trend, color = "blue" }) {
 }
 
 export default function Dashboard() {
-    const [apartments, setApartments] = useState([]);
-    const [tenants, setTenants] = useState([]);
-    const [rentals, setRentals] = useState([]);
+
+    // ⬅️ Changed: we store COUNTS, not arrays
+    const [apartmentsCount, setApartmentsCount] = useState(0);
+    const [tenantsCount, setTenantsCount] = useState(0);
+    const [rentalsCount, setRentalsCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // simulate backend call
         fetch("http://localhost:8081/api/dashboard")
             .then(res => res.json())
             .then(data => {
-                setApartments(data.apartments || []);
-                setTenants(data.tenants || []);
-                setRentals(data.rentals || []);
+                setApartmentsCount(data.apartmentsCount || 0);
+                setTenantsCount(data.tenantsCount || 0);
+                setRentalsCount(data.rentalsCount || 0);
                 setIsLoading(false);
             })
             .catch(err => {
@@ -76,21 +77,21 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 <StatCard
                     title="Total Properties"
-                    value={apartments.length}
+                    value={apartmentsCount}
                     icon={Building2}
                     color="blue"
                     trend="+12% from last month"
                 />
                 <StatCard
                     title="Active Tenants"
-                    value={tenants.length}
+                    value={tenantsCount}
                     icon={Users}
                     color="green"
                     trend="+8% from last month"
                 />
                 <StatCard
                     title="Active Rentals"
-                    value={rentals.length}
+                    value={rentalsCount}
                     icon={FileText}
                     color="purple"
                     trend="+5% from last month"
@@ -120,7 +121,7 @@ export default function Dashboard() {
             <div className="bg-white rounded-xl shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
                 <div className="space-y-4">
-                    {rentals.length === 0 ? (
+                    {rentalsCount === 0 ? (
                         <p className="text-gray-500 text-center py-8">No recent activity to display</p>
                     ) : (
                         <p className="text-gray-500">Activity feed will be populated from backend data</p>
