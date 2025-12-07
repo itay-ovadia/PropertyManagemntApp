@@ -12,32 +12,20 @@ This project is currently under active development.
 Backend
 
 Java 17+
-
 Spring Boot 3+
-
 Spring Web
-
-Spring Security (JWT)
-
 Spring Data MongoDB
-
 Spring Validation
-
 OpenAPI/Swagger (springdoc)
-
 Database
-
 MongoDB
 
 Document-based structure for flexible property + tenant data
-
 DevOps / Deployment
-
-Docker & Docker Compose
-
+Docker 
 Containerized backend + MongoDB for easy dev environment
 
-📂 Features
+📂 Features (in progress)
 Tenant Features
 
 🔑 Secure Authentication
